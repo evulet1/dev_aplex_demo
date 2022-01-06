@@ -1,0 +1,103 @@
+<head>
+    <!-- ... -->
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+ 
+    <!-- DevExtreme theme -->
+    <link rel="stylesheet" href="https://cdn3.devexpress.com/jslib/21.2.4/css/dx.light.css">
+    <link rel="stylesheet" href="style.css">
+ 
+    <!-- DevExtreme library -->
+    <script type="text/javascript" src="https://cdn3.devexpress.com/jslib/21.2.4/js/dx.all.js"></script>
+    <script type="text/javascript" src="js.js"></script>
+    <!-- <script type="text/javascript" src="https://cdn3.devexpress.com/jslib/21.2.4/js/dx.web.js"></script> -->
+    <!-- <script type="text/javascript" src="https://cdn3.devexpress.com/jslib/21.2.4/js/dx.viz.js"></script> -->
+</head>
+<body class="dx-viewport">
+    <div class="demo-container">
+      <div id="toolbar"></div>
+      <div id="drawer">
+        <div id="content" class="dx-theme-background-color"></div>
+      </div>
+      <div class="options">
+        <div class="caption">Options</div>
+        <div class="options-container">
+          <div class="option">
+            <label>Opened state mode</label>
+            <div id="opened-state-mode"></div>
+          </div>
+          <div class="option">
+            <label>Position</label>
+            <div id="position-mode"></div>
+          </div>
+          <div id="reveal-mode-option" class="option">
+            <label>Reveal mode</label>
+            <div id="reveal-mode"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+  <script>
+      $(() => {
+  $('#content').html(text);
+
+  const drawer = $('#drawer').dxDrawer({
+    opened: true,
+    height: 400,
+    closeOnOutsideClick: true,
+    template() {
+      const $list = $('<div>').width(200).addClass('panel-list');
+
+      return $list.dxList({
+        dataSource: navigation,
+        hoverStateEnabled: false,
+        focusStateEnabled: false,
+        activeStateEnabled: false,
+        elementAttr: { class: 'dx-theme-accent-as-background-color' },
+      });
+    },
+  }).dxDrawer('instance');
+
+  $('#toolbar').dxToolbar({
+    items: [{
+      widget: 'dxButton',
+      location: 'before',
+      options: {
+        icon: 'menu',
+        onClick() {
+          drawer.toggle();
+        },
+      },
+    }],
+  });
+
+  $('#reveal-mode').dxRadioGroup({
+    items: ['slide', 'expand'],
+    layout: 'horizontal',
+    value: 'slide',
+    onValueChanged(e) {
+      drawer.option('revealMode', e.value);
+    },
+  });
+
+  $('#opened-state-mode').dxRadioGroup({
+    items: ['push', 'shrink', 'overlap'],
+    layout: 'horizontal',
+    value: 'shrink',
+    onValueChanged(e) {
+      drawer.option('openedStateMode', e.value);
+      $('#reveal-mode-option').css('visibility', e.value !== 'push' ? 'visible' : 'hidden');
+    },
+  });
+
+  $('#position-mode').dxRadioGroup({
+    items: ['left', 'right'],
+    layout: 'horizontal',
+    value: 'left',
+    onValueChanged(e) {
+      drawer.option('position', e.value);
+    },
+  });
+});
+
+  </script>
